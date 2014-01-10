@@ -1,0 +1,173 @@
+/* 'star-rating' component */
+.starRate {
+	position:relative; 
+	overflow:hidden; 
+	zoom:1;
+	margin-bottom: 10px;
+}
+
+.starRate ul {
+	width:160px; 
+	margin:0; 
+	padding:0;
+}
+
+.starRate li {
+	display:inline; 
+	list-style:none;
+}
+
+.starRate a, .starRate b {
+	background:url('star.gif') left top repeat-x;
+}
+
+.starRate a {
+	float:right; 
+	margin:0 80px 0 -144px; 
+	width:80px; height:16px; 
+	background-position:left 0px; 
+	color:#000; 
+	text-decoration:none;
+
+}
+
+.starRate a:hover { background-position:left -32px; }
+
+.starRate b {
+	position:absolute; 
+	z-index:-1; 
+	width:80px; 
+	height:16px; 
+	background-position:left -16px;
+}
+
+.starRate div b {
+	left:0px; 
+	bottom:0px; 
+	background-position:left top;
+}
+
+.starRate a span { position:absolute; left:-300px; }
+
+.starRate a:hover span { left:90px; width:100%; }
+
+.submit-btn { 
+	margin: 10px 0;
+	font-weight: bold;
+} 
+
+.product-description { margin: 20px; }
+
+.right { 
+	float: right;
+	margin-top: 25px;
+}
+
+.left { float: left; }
+
+.width-half { width: 50%; }
+
+.product-text {
+	margin: 10px 0;
+	font-size: 16px;
+	font-family: 'Garamond';
+}
+
+ul, li { list-style-type: none; }
+
+.clear { clear: both; }
+
+#product-list li {
+	display: block;
+	float: left;
+	margin: 10px 10px 10px 0;
+	padding: 10px;
+	border: 1px solid lightgray;
+	cursor: pointer;
+	font-size: 16px;
+	font-family: 'Garamond';
+}
+
+.wrapper {
+	margin: 0 auto;
+	width: 1000px;
+	border: 1px solid #989898;
+}
+
+.row { margin: 0; }
+
+body { background-color: #F8F8F8; }
+
+.review-list li {
+	font-size: 16px;
+	font-family: 'Garamond';
+}
+
+.description {
+	font-size: 20px;
+	margin-top: 10px;
+	font-family: 'Garamond';
+}
+
+h2, h3 {
+	margin: 0;
+	font-family: 'Garamond';
+}
+
+hr { border-top: 1px solid #D0D0D0;}
+
+.rate-p { margin: 0;}
+
+.list-group-item {
+	margin-bottom: 5px;
+	-moz-border-radius: 10px; /* Firefox */
+    -webkit-border-radius: 10px; /* Safari, Chrome */
+    border-radius: 10px; /* CSS3 */
+}
+
+.auth {
+	margin: 20px 20px 0 0;
+	float: right;
+}
+
+.login {
+	position: absolute;
+    height: 200px;
+    width: 200px;
+    margin: -100px 0 0 -200px;
+    top: 50%;
+    left: 50%;
+}
+
+.login-btn { margin: 10px 0; }
+
+.marked {
+	background-color: black;
+	color: white;
+}
+
+.registration {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    margin: -100px 0 0 -200px;
+    top: 50%;
+    left: 50%;
+}
+
+.username { font-style: italic; }
+
+.info {
+    font-size: 20px;
+	padding: 10px;
+	font-family: 'Garamond';
+    color: #800000;
+    border: 1px solid #B0B0B0;
+    -moz-border-radius: 10px; /* Firefox */
+    -webkit-border-radius: 10px; /* Safari, Chrome */
+    border-radius: 10px; /* CSS3 */
+}
+
+#content { resize: none;}
+
+.sign-up { margin-top: 10px;}

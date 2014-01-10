@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{% block head %}
+        <meta name="csrf-token" content="{{csrf_token}}">
+		<script type="text/javascript" src='/static/lib/jquery.js'></script>
+		<script type="text/javascript" src='/static/bootstrap/bootstrap.min.js'></script>
+		<link rel="stylesheet" type="text/css" href="/static/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/style.css">
+		{% endblock %}
+		{% block extra_head %}{% endblock %}
+	</head>
+	<body>
+	{% block body %}{% endblock %}
+	</body>
+</html>

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>My reviews webpage</title>
+    <script type="text/html" id="template-product">
+      <li class='product'>
+        <strong><%= title %></strong>
+      </li>
+    </script>
+    <script type="text/html" id="template-product-details">
+      <ul>
+          <li>
+            <strong><%= title %></strong>
+          </li>
+          <li>
+            <strong><%= img %></strong>
+          </li>
+          <li>
+            <strong><%= text %></strong>
+          </li>
+      </ul>
+      <ul class="review-list"></ul>
+    </script>
+    <script type="text/html" id="template-review">
+      <li>
+         <%= rate %> - <%= text %>     
+      </li>
+    </script>
+</head>
+<body>
+    <div id="myapp">
+    <ul id="product-list">        
+    </ul>
+    <div id="product-details">        
+    </div>
+        
+    </div>
+    <script src="static/lib/jquery.js"></script>
+    <script src="static/lib/underscore.js"></script>
+    <script src="static/lib//backbone.js"></script>
+    <script>
+    $(function(){
+
+        var Review = Backbone.Model.extend({            
+            urlRoot: '/api/review/',
+            url: function () {
+                var origUrl = Backbone.Model.prototype.url.call(this);
+                return origUrl + (origUrl.charAt(origUrl.length - 1) == '/' ? '' : '/');
+            }
+        });
+
+        var ReviewList = Backbone.Collection.extend({
+            model: Review,
+            urlRoot: '/api/reviews',
+            url: function () {
+                //var origUrl = Backbone.Collection.prototype.url.call(this);
+                var origUrl = this.urlRoot;
+                return origUrl + (origUrl.charAt(origUrl.length - 1) == '/' ? '' : '/') + this.id_entry;
+            },
+            initialize: function(id_entry) {
+              this.id_entry = id_entry;
+            }
+        });
+        window.ReviewList = ReviewList;
+
+        var Product = Backbone.Model.extend({            
+            urlRoot: '/api/products/',
+            url: function () {
+                var origUrl = Backbone.Model.prototype.url.call(this);
+                return origUrl + (origUrl.charAt(origUrl.length - 1) == '/' ? '' : '/');
+            },
+            defaults: function() {
+              return {
+                "img": "default.png", 
+                "text": "default...", 
+                "title": "unknown product"
+              };
+            },
+            initialize: function() {
+              if (!this.get("title")) {
+                this.set({"title": this.defaults.title});
+              }
+            },
+            get_reviews:function(collection){
+                this.reviews = collection;
+                this.trigger('reviews_arrived');
+            },
+            fetch_reviews: function(){
+                this.reviews = new ReviewList(this.get('id'));
+                this.reviews.fetch({
+                    success:_.bind(this.get_reviews,this)
+                });
+            }
+        });        
+
+        var ProductList = Backbone.Collection.extend({
+            model: Product,
+            url: '/api/products',
+            initialize:function(){
+                this.on('add',this.fetch_product_reviews, this);
+            },
+            fetch_product_reviews:function(product){
+                product.fetch_reviews();
+            }
+        });
+
+        products = new ProductList();
+
+
+
+        var ProductView = Backbone.View.extend({
+            tagName:  "li",
+            template: _.template($('#template-product').html()),
+            events:{
+                'click':'on_click'
+            },
+            render: function() {
+                this.$el.html(this.template(this.model.toJSON()));
+                return this;
+            },
+            on_click:function(){
+                this.trigger('select',this.model);
+            }
+        });
+
+        var ReviewView = Backbone.View.extend({
+            tagName:  "li",
+            template: _.template($('#template-review').html()),
+            render: function() {
+                this.$el.html(this.template(this.model.toJSON()));
+                return this;
+            }
+        });
+
+        var ProductDetailsView = Backbone.View.extend({
+            tagName:  "div",
+            template: _.template($('#template-product-details').html()),
+            render: function() {
+                this.$el.html(this.template(this.model.toJSON()));
+                this.model.on("reviews_arrived",this.render_reviews,this);
+                // if(this.ready){
+                    this.render_reviews();
+                // }
+                return this;
+            },
+            render_reviews:function(){
+                this.ready = true;
+                for (var i = this.model.reviews.models.length - 1; i >= 0; i--) {
+                    var view = new ReviewView({model: this.model.reviews.models[i]});
+                    this.$(".review-list").append(view.render().el);
+                };
+            }
+        });
+
+        var AppView = Backbone.View.extend({
+            el: $("#myapp"),
+            initialize: function() {
+
+                products.bind('sync', this.render, this)
+                
+                products.fetch();
+            },
+            select_product: function(model){
+                this.details_view && this.details_view.remove();
+                this.details_view = new ProductDetailsView({model: model});
+                this.$("#product-details").html(this.details_view.render().el);
+            },
+            render: function(collection) {
+                for (var i = collection.models.length - 1; i >= 0; i--) {                    
+                    var view = new ProductView({model: collection.models[i]});
+                    view.on('select',this.select_product,this);
+                    this.$("#product-list").append(view.render().el);
+                };
+                this.select_product(collection.models[0]);
+            },
+        });
+
+        var App = new AppView;
+
+    });
+    </script>
+</body>
+</html>

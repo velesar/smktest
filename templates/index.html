@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+	<script type="text/javascript" src='{{ STATIC_URL }}lib/underscore.js'></script>
+	<script type="text/javascript" src='/static/lib/backbone.js'></script>
+	<script type="text/javascript" src='/static/js/ProductModel.js'></script>
+	<script type="text/javascript" src='/static/js/ProductView.js'></script>
+	<script type="text/javascript" src='/static/js/ReviewModel.js'></script>
+	<script type="text/javascript" src='/static/js/CreateReviewView.js'></script>
+	<script type="text/javascript" src='/static/js/ProductDetailView.js'></script>
+	<script type="text/javascript" src='/static/js/ReviewView.js'></script>
+	<script type="text/javascript" src='/static/js/ReviewsCollection.js'></script>
+	<script type="text/javascript" src='/static/js/ProductCollection.js'></script>
+	<script type="text/javascript" src='/static/js/app.js'></script>
+{% endblock %}
+
+{% block body %}
+
+<script type="text/html" id="product-detail">
+	<div class="col-lg-12 col-md-12">
+		<div class='left width-half'> 
+			<div class="row">
+				<div class='product-description'>
+					<li>
+						<h2> <%= title %> </h2>
+						<hr/>
+					</li>
+					<li>
+						<img src=/static/<%= img %> />
+					</li>
+					<p class='description'> Product Description
+						<hr/>
+						<li class='product-text'>
+							<%= text %>
+						</li>
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class='right width-half'>
+			<div class="row">
+				<div class="newReview"></div>
+			</div>
+			<div class="row">
+				<h3> Reviews </h3>
+				<ul class="review-list list-group">
+				
+				</ul>
+			</div>
+		</div>
+		<div class="clear"></div>
+</div>
+</script>
+
+<script type="text/html" id="add-review">
+	<div class="starRate">
+		<ul>
+			<li ><a href="#" class='stars' data-value="5"><span>5 stars</span></a></li>
+			<li ><a href="#" class='stars' data-value="4"><span>4 stars</span></a></li>
+			<li ><a href="#" class='stars' data-value="3"><span>3 stars</span></a></li>
+			<li><a href="#"  class='stars' data-value="2"><span>2 stars</span></a></li>
+			<li ><a href="#" class='stars' data-value="1"><span>1 star</span></a></li>
+		</ul>
+	</div>
+	<textarea id="content" placeholder="Type your review..." class="form-control"></textarea>
+	<button class="btn btn-info submit-btn" >Submit Review</button>
+</script>
+<script type="text/html" id="product">
+        <%= title %>
+</script>
+<script type="text/html" id="review">
+        <p class="username"> <%= created_by.username %> at <%= created_at %>:</p>
+        <p class='rate-p'> Rate: <%= rate %> </p>
+        <span> Comment: <%= text %> </span>     
+</script>
+
+
+<div id="myapp">
+	<div class="wrapper">
+		<ul id="product-list">
+			{% comment %}<div class="auth">
+                {% if user.is_authenticated %}
+                    <p> Hello, {{ user.username }}  <a href="{% url 'logout' %}" class="btn btn-default">sign out</a></p>
+                {% else %}
+                   <a href="{% url 'login' %}" class="btn btn-default" >sign in</a>
+                    <a href="{% url 'register' %}" class="btn btn-default" >sign up</a>
+                {% endif%}
+			</div>{% endcomment %}
+		</ul>
+	    <div class="clear"></div>
+
+		<div id="product-details"></div>
+	</div>
+</div>
+{% endblock %}

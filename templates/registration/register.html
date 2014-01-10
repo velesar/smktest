@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block body %}
+    <div class='registration'>
+       <form action="{% url 'register' %}" method="post" id="registration_form">
+            <fieldset>
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="alert alert-error">
+                        <strong> "There was a problem creating your account!"</strong>
+                             "Please fix the errors below."
+                    </div>
+                {% endif %}
+
+                 <label> Username</label>
+                {{ form.username|add_class:"form-control" }}
+                <label> Enter Password</label>
+                {{ form.password1|add_class:"form-control" }}
+                <label> Repeat Password</label>
+                {{ form.password2 |add_class:"form-control"}}
+                <div class="form-actions">
+                    <input type="submit" class="btn btn-large btn-primary sign-up" value="Sign up" />
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

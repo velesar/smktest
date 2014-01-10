@@ -1,0 +1,8 @@
+django
+djangorestframework
+gunicorn
+django-widget-tweaks
+south
+django-oauth2-provider
+django-extensions
+werkzeug
